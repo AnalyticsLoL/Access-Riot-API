@@ -1,44 +1,32 @@
-var builder = WebApplication.CreateBuilder(args);
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using AccessRiotAPI;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    private static readonly HttpClient client = new HttpClient();
 
-app.UseHttpsRedirection();
+    static async Task Main(string[] args)
+    {   
+        ApiKey apiKey = new ApiKey();
+        string summonerName = "Sarenberi#NA1";
+        string region = "na1";
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+        string requestUrl = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/{summonerName}?api_key={apiKey.key}";
+        Console.WriteLine($"Sending request to: {requestUrl}");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+        try
+        {
+            HttpResponseMessage response = await client.GetAsync(requestUrl);
+            response.EnsureSuccessStatusCode();
 
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"Request error: {e.Message}");
+        }
+    }
 }

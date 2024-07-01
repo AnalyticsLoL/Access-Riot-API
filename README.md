@@ -9,6 +9,7 @@ cd AccessRiotAPI
 ```
 2. Add http dotnet package
 ```
+dotnet add package Microsoft.AspNetCore.Http
 dotnet add package System.Net.Http
 ```
 
