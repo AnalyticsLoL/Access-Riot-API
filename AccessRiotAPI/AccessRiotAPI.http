@@ -1,0 +1,6 @@
+@AccessRiotAPI_HostAddress = http://localhost:5040
+
+GET {{AccessRiotAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
