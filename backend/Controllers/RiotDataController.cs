@@ -40,8 +40,8 @@ namespace backend.Controllers
         [HttpGet("matchinfo")]
         public IActionResult GetMatchInfos([FromQuery] string matchId)
         {
-            var matchIds = _riotService.GetMatchInfos(matchId);
-            return Ok(matchIds);
+            var matchInfo = _riotService.GetMatchInfos(matchId);
+            return Ok(matchInfo);
         }       
     }
 }
