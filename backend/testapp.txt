@@ -1,0 +1,6 @@
+Post request body
+{
+  "summonerName": "darthmomo18",
+  "region": "americas",
+  "regionTag": "NA1"
+}
