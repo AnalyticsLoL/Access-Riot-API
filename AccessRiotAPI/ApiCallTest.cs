@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AccessRiotAPI;
 using Newtonsoft.Json;
+using static AccessRiotAPI.ApiKey;
 
 namespace RiotApiTest
 {
     class Program
     {
-        private static readonly string apiKey = "";
+        private static readonly string apiKey = new ApiKey().key;
         private static readonly string summonerName = "darthmomo18";
         private static readonly string region = "americas";
 
@@ -20,13 +22,13 @@ namespace RiotApiTest
             try
             {
                 var puuid = await GetPuuidBySummonerName(summonerName);
-                //var matchHistory = await GetMatchHistoryByGameId(puuid);
+                var matchHistory = await GetMatchHistoryByGameId(puuid);
 
                 Console.WriteLine("Match History:");
-                /*foreach (var match in matchHistory)
+                foreach (var match in matchHistory)
                 {
                     Console.WriteLine(match);
-                }*/
+                }
             }
             catch (Exception ex)
             {
@@ -38,11 +40,13 @@ namespace RiotApiTest
         {
             using (HttpClient client = new HttpClient())
             {
-                var url = $"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summonerName}/NA1?api_key={apiKey}";
+                var url = baseUrl+$"/account/v1/accounts/by-riot-id/{summonerName}/{regionTag}";
+                Console.WriteLine("Sending request to: "+url);
+                url+=$"?api_key={apiKey}";
                 
                 var response = await client.GetStringAsync(url);
                 Console.WriteLine(response);
-                var summoner = JsonContent.DeserializeObject<Summoner>(response);
+                var summoner = JsonConvert.DeserializeObject<Summoner>(response);
 
                 if (summoner == null)
                 {
