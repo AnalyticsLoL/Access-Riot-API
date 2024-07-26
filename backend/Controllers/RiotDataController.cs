@@ -31,10 +31,16 @@ namespace backend.Controllers
             var summonerData = _riotService.GetSummonerInfo();
             return Ok(summonerData);
         }
-        [HttpGet("matchhistory")]
-        public IActionResult GetMatchHistory()
+        [HttpGet("summonerId")]
+        public IActionResult GetSummonerId()
         {
-            var matchIds = _riotService.GetMatchHistoryGameIds();
+            var summonerId = _riotService.GetSummonerId();
+            return Ok(summonerId);
+        }
+        [HttpGet("matchhistory")]
+        public IActionResult GetMatchHistory([FromQuery] string? region, [FromQuery] string? puuid, [FromQuery] int? idStartList, [FromQuery] int? idEndList)
+        {
+            var matchIds = _riotService.GetMatchHistoryGameIds(region, puuid, idStartList, idEndList);
             return Ok(matchIds);
         } 
         [HttpGet("matchinfo")]

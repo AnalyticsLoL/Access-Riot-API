@@ -4,3 +4,10 @@ Post request body
   "region": "americas",
   "regionTag": "NA1"
 }
+
+{
+  "summonerName": "nataka",
+  "region": "americas",
+  "regionTag": "na1",
+  "tagLine": "7797"
+}
