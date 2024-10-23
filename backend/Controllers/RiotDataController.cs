@@ -22,6 +22,7 @@ namespace backend.Controllers
 
             // Update RiotService with new settings
             _riotService.UpdateSettings(settings);
+            _riotService.GetSummonerInfo();
 
             return Ok(_riotService._settings);
         }
